@@ -185,15 +185,6 @@ export default function EverplayLandingPage() {
             <p>ybao0287@gmail.com</p>
           </div>
         </div>
-
-        <div className="max-w-6xl mx-auto mt-10 pt-8 border-t border-[#cdbde0] flex flex-col items-center gap-3">
-          <p className="text-sm text-[#8f7daa]">扫码访问网站</p>
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://everplay-a8mh.vercel.app"
-            alt="QR Code"
-            className="w-28 h-28 rounded-xl bg-white p-2 shadow-md"
-          />
-        </div>
       </footer>
     </div>
   )
