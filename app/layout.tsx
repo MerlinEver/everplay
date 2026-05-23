@@ -50,6 +50,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
+      <head>
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <link rel="apple-touch-icon" type="image/png" href="/logo.png" />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
