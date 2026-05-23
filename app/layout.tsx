@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: "/everplay/logo.png",
+    apple: "/everplay/logo.png",
   },
 };
 
@@ -50,10 +50,6 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <head>
-        <link rel="icon" type="image/png" href="/logo.png" />
-        <link rel="apple-touch-icon" type="image/png" href="/logo.png" />
-      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
