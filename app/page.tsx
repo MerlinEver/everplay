@@ -166,6 +166,30 @@ export default function EverplayLandingPage() {
         </div>
       </section>
 
+      {/* QR Code */}
+      <section className="px-8 md:px-20 py-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <div className="inline-block px-4 py-1 rounded-full bg-[#d7c6ec] text-[#5d4b75] text-sm mb-5">
+              Share Everplay
+            </div>
+            <h2 className="text-4xl md:text-5xl font-semibold">分享我们</h2>
+          </div>
+          <div className="flex justify-center">
+            <div className="rounded-[32px] bg-white/60 backdrop-blur-xl border border-white/50 shadow-xl p-8 flex flex-col items-center gap-4">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://merlinever.github.io/everplay/"
+                alt="Everplay QR Code"
+                width={200}
+                height={200}
+                className="rounded-xl"
+              />
+              <p className="text-[#6d5f82] text-sm">扫描二维码访问 Everplay</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="px-8 md:px-20 py-16 border-t border-[#cdbde0]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
