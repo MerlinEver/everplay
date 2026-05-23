@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function EverplayLandingPage() {
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5b4a72] font-sans overflow-hidden">
@@ -8,7 +10,7 @@ export default function EverplayLandingPage() {
         <div className="relative z-10 max-w-5xl w-full">
           <div className="flex flex-col items-center gap-6">
             <img
-              src="https://placehold.co/240x240/png"
+              src="/logo.png"
               alt="Everplay Logo"
               className="w-40 h-40 md:w-52 md:h-52 object-contain drop-shadow-2xl"
             />
@@ -24,13 +26,13 @@ export default function EverplayLandingPage() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <button className="px-8 py-3 rounded-2xl bg-[#8f79b4] text-white text-lg shadow-lg hover:scale-105 transition">
+              <Link href="/games" className="px-8 py-3 rounded-2xl bg-[#8f79b4] text-white text-lg shadow-lg hover:scale-105 transition inline-block">
                 进入世界
-              </button>
+              </Link>
 
-              <button className="px-8 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:bg-[#e6d9f6] transition">
+              <Link href="/about" className="px-8 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:bg-[#e6d9f6] transition inline-block">
                 关于 Everplay
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -65,7 +67,7 @@ export default function EverplayLandingPage() {
             <div className="relative bg-white/50 backdrop-blur-xl rounded-[32px] p-10 shadow-2xl border border-white/40 max-w-md">
               <div className="flex flex-col items-center text-center gap-5">
                 <img
-                  src="https://placehold.co/180x180/png"
+                  src="/logo.png"
                   alt="Everplay Symbol"
                   className="w-36 h-36 object-contain"
                 />
@@ -139,8 +141,15 @@ export default function EverplayLandingPage() {
             </h3>
 
             <p className="text-[#746487]">
-              水色游戏 · 游戏 × 音乐 × 科技
+              游戏 × 音乐 × 科技
             </p>
+          </div>
+
+          <div className="flex gap-6 text-[#756588]">
+            <Link href="/about" className="hover:text-[#5b4a72] transition">关于</Link>
+            <Link href="/games" className="hover:text-[#5b4a72] transition">游戏</Link>
+            <Link href="/blog" className="hover:text-[#5b4a72] transition">博客</Link>
+            <Link href="/contact" className="hover:text-[#5b4a72] transition">联系</Link>
           </div>
 
           <div className="text-center md:text-right text-[#756588] leading-8">
