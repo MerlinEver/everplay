@@ -57,7 +57,7 @@ export default function EverplayLandingPage() {
                 进入世界
               </Link>
 
-              <Link href="/about" className="px-8 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:bg-[#e6d9f6] hover:text-[#a07cc5] hover:scale-105 transition inline-block">
+              <Link href="/about" className="px-8 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:text-[#c4a6e8] hover:font-semibold hover:bg-[#e6d9f6] hover:-translate-x-1 hover:scale-105 transition inline-block">
                 关于 Everplay
               </Link>
             </div>
@@ -173,10 +173,10 @@ export default function EverplayLandingPage() {
           </div>
 
           <div className="flex gap-6 text-[#756588]">
-            <Link href="/about" className="hover:text-[#a07cc5] hover:scale-110 transition inline-block">关于</Link>
-            <Link href="/games" className="hover:text-[#a07cc5] hover:scale-110 transition inline-block">游戏</Link>
-            <Link href="/blog" className="hover:text-[#a07cc5] hover:scale-110 transition inline-block">博客</Link>
-            <Link href="/contact" className="hover:text-[#a07cc5] hover:scale-110 transition inline-block">联系</Link>
+            <Link href="/about" className="hover:text-[#c4a6e8] hover:font-semibold hover:-translate-x-1 hover:scale-125 transition inline-block">关于</Link>
+            <Link href="/games" className="hover:text-[#c4a6e8] hover:font-semibold hover:-translate-x-1 hover:scale-125 transition inline-block">游戏</Link>
+            <Link href="/blog" className="hover:text-[#c4a6e8] hover:font-semibold hover:-translate-x-1 hover:scale-125 transition inline-block">博客</Link>
+            <Link href="/contact" className="hover:text-[#c4a6e8] hover:font-semibold hover:-translate-x-1 hover:scale-125 transition inline-block">联系</Link>
           </div>
 
           <div className="text-center md:text-right text-[#756588] leading-8">
