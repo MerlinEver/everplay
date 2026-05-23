@@ -19,7 +19,21 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Everplay - 游戏 × 音乐 × 科技",
-  description: "让游戏改变生活，让每个人都玩到我们的游戏。",
+  description: "让游戏改变生活，让每个人都玩到我们的游戏。Everplay 是一个融合音乐灵魂、幻想世界与未来科技的游戏品牌。",
+  keywords: ["Everplay", "游戏", "音乐", "科技", "独立游戏", "游戏品牌", "音乐游戏"],
+  authors: [{ name: "Merlin" }],
+  openGraph: {
+    title: "Everplay - 游戏 × 音乐 × 科技",
+    description: "让游戏改变生活，让每个人都玩到我们的游戏。",
+    url: "https://everplay-a8mh.vercel.app",
+    siteName: "Everplay",
+    locale: "zh_CN",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
