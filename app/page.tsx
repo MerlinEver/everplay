@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function EverplayLandingPage() {
   return (
-    <div className="min-h-screen bg-[#ece6f3] text-[#5b4a72] font-sans overflow-hidden">
+    <div className="min-h-screen bg-[#ece6f3] text-[#5b4a72] font-sans">
       {/* Hero */}
       <section className="relative px-8 py-20 md:px-20 flex flex-col items-center text-center">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#d9caeb] to-transparent opacity-40"></div>
