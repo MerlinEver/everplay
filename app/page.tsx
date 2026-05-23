@@ -38,10 +38,11 @@ export default function EverplayLandingPage() {
         <div className="relative z-10 max-w-5xl w-full">
           <div className="flex flex-col items-center gap-6">
             <Image
-              src="/logo.png"
+              src="/everplay/logo.png"
               alt="Everplay Logo"
               width={208}
               height={208}
+              unoptimized
               className="w-40 h-40 md:w-52 md:h-52 object-contain drop-shadow-2xl"
             />
 
@@ -97,10 +98,11 @@ export default function EverplayLandingPage() {
             <div className="relative bg-white/50 backdrop-blur-xl rounded-[32px] p-10 shadow-2xl border border-white/40 max-w-md">
               <div className="flex flex-col items-center text-center gap-5">
                 <Image
-                  src="/logo.png"
+                  src="/everplay/logo.png"
                   alt="Everplay Symbol"
                   width={144}
                   height={144}
+                  unoptimized
                   className="w-36 h-36 object-contain"
                 />
 
