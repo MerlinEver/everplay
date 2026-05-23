@@ -10,6 +10,7 @@ export default function GamesPage() {
       <p className="text-xl text-[#6d5a87] mb-12">游戏世界</p>
       <Link
         href="/"
+        scroll={false}
         className="px-6 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:bg-[#e6d9f6] transition"
       >
         返回首页
