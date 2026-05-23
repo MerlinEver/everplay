@@ -11,7 +11,7 @@ export default function ContactPage() {
       <Link
         href="/"
         scroll={false}
-        className="px-6 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:bg-[#e6d9f6] transition"
+        className="px-6 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:text-[#a07cc5] hover:bg-[#e6d9f6] hover:scale-105 transition inline-block"
       >
         返回首页
       </Link>
