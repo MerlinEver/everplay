@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import Signature from "./components/Signature";
 import { useEffect } from "react";
 
 export default function EverplayLandingPage() {
@@ -165,6 +166,8 @@ export default function EverplayLandingPage() {
           </div>
         </div>
       </section>
+
+      <Signature />
 
       {/* Footer */}
       <footer className="px-8 md:px-20 py-16 border-t border-[#cdbde0]">
