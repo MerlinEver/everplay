@@ -192,6 +192,8 @@ export default function EverplayLandingPage() {
           <div className="text-center md:text-right text-[#756588] leading-8">
             <p>Founder / Game Designer</p>
             <p>Merlin</p>
+            <p>Co-founder / Partner</p>
+            <p>Ali</p>
             <p>ybao0287@gmail.com</p>
           </div>
         </div>
