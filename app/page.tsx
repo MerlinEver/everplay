@@ -7,27 +7,7 @@ import { useEffect } from "react";
 
 export default function EverplayLandingPage() {
   useEffect(() => {
-    const saved = sessionStorage.getItem("everplay-scroll");
-    if (saved) {
-      requestAnimationFrame(() => {
-        window.scrollTo(0, parseInt(saved, 10));
-      });
-    }
-    sessionStorage.removeItem("everplay-scroll");
-
-    const saveScroll = () => {
-      sessionStorage.setItem("everplay-scroll", String(window.scrollY));
-    };
-
-    window.addEventListener("beforeunload", saveScroll);
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) saveScroll();
-    });
-
-    return () => {
-      saveScroll();
-      window.removeEventListener("beforeunload", saveScroll);
-    };
+    window.scrollTo(0, 0);
   }, []);
 
   return (

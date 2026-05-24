@@ -1,3 +1,0 @@
-User-Agent: *
-Allow: /
-Sitemap: https://everplay-a8mh.vercel.app/sitemap.xml
