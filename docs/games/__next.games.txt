@@ -2,4 +2,4 @@
 2:I[39756,["/everplay/_next/static/chunks/0ahc11l6aqs-t.js","/everplay/_next/static/chunks/0d9y~ee11bp-a.js"],"default"]
 3:I[37457,["/everplay/_next/static/chunks/0ahc11l6aqs-t.js","/everplay/_next/static/chunks/0d9y~ee11bp-a.js"],"default"]
 4:[]
-0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"iXsMMNrLLxH_B7rxl5Kti"}
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"6kNkXuavcrYuhWA71jkjj"}
