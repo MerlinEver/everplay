@@ -46,7 +46,7 @@ export default function Signature() {
             stroke="#5b4a72"
             strokeWidth="1.2"
             fontSize="100"
-            fontFamily="var(--font-caveat), 'Caveat', 'Dancing Script', cursive"
+            fontFamily="'Caveat', 'Dancing Script', 'Brush Script MT', cursive"
             fontWeight="700"
             strokeDasharray="900"
             strokeDashoffset={animate ? "0" : "900"}
@@ -63,7 +63,7 @@ export default function Signature() {
             textAnchor="middle"
             fill="#5b4a72"
             fontSize="100"
-            fontFamily="var(--font-caveat), 'Caveat', 'Dancing Script', cursive"
+            fontFamily="'Caveat', 'Dancing Script', 'Brush Script MT', cursive"
             fontWeight="700"
             opacity={animate ? "1" : "0"}
             style={{
