@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);
@@ -26,13 +25,10 @@ export default function LoadingScreen() {
       }`}
     >
       <div className="animate-loading-logo">
-        <Image
+        <img
           src="/everplay/logo.png"
           alt="Everplay"
-          width={120}
-          height={120}
-          unoptimized
-          className="object-contain"
+          className="object-contain w-[120px] h-[120px]"
         />
       </div>
     </div>

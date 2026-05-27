@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 
 export default function RegisterPage() {
@@ -34,12 +33,9 @@ export default function RegisterPage() {
         <div className="bg-white/60 backdrop-blur-xl px-8 py-10 md:px-14 md:py-14 flex flex-col">
           {/* Logo 区域 */}
           <div className="flex items-center gap-3 mb-8">
-            <Image
+            <img
               src="/everplay/logo.png"
               alt="Everplay Logo"
-              width={40}
-              height={40}
-              unoptimized
               className="w-9 h-9 object-contain"
             />
             <span className="text-xl font-light tracking-wide text-[#5B4A7A]">
