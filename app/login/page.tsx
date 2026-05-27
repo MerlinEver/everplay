@@ -59,7 +59,7 @@ export default function LoginPage() {
           </p>
 
           {/* 表单 */}
-          <form className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             {/* 邮箱/用户名 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
@@ -153,7 +153,7 @@ export default function LoginPage() {
             >
               登录 →
             </button>
-          </form>
+          </div>
 
           {/* 分隔线 */}
           <div className="flex items-center gap-4 my-8">
