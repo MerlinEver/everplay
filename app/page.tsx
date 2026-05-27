@@ -38,9 +38,9 @@ export default function EverplayLandingPage() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <Link href="/login" className="px-8 py-3 rounded-2xl bg-[#8f79b4] text-white text-lg shadow-lg hover:scale-105 transition inline-block">
+              <a href="/everplay/login" className="px-8 py-3 rounded-2xl bg-[#8f79b4] text-white text-lg shadow-lg hover:scale-105 transition inline-block">
                 进入世界
-              </Link>
+              </a>
 
               <Link href="/about" className="px-8 py-3 rounded-2xl border border-[#8f79b4] text-[#6d5a87] text-lg hover:text-[#c4a6e8] hover:font-semibold hover:bg-[#e6d9f6] hover:-translate-x-1 hover:scale-105 transition inline-block">
                 关于 Everplay
