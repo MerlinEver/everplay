@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 
 
@@ -14,8 +13,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegister = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRegister = () => {
     // 注册逻辑
   };
 
@@ -58,7 +56,7 @@ export default function RegisterPage() {
           </p>
 
           {/* 表单 */}
-          <form onSubmit={handleRegister} className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4">
             {/* 用户名 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
@@ -186,19 +184,20 @@ export default function RegisterPage() {
               </div>
               <span className="text-sm text-[#7a6b95] group-hover:text-[#5B4A7A] transition-colors leading-relaxed">
                 我已阅读并同意{" "}
-                <Link href="/terms" className="text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors">
+                <a href="/everplay/terms" className="text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors">
                   服务条款
-                </Link>{" "}
+                </a>{" "}
                 和{" "}
-                <Link href="/privacy" className="text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors">
+                <a href="/everplay/privacy" className="text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors">
                   隐私政策
-                </Link>
+                </a>
               </span>
             </label>
 
             {/* 主按钮 */}
             <button
-              type="submit"
+              type="button"
+              onClick={handleRegister}
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
               注册 →
@@ -240,9 +239,9 @@ export default function RegisterPage() {
           {/* 登录引导 */}
           <p className="text-center text-sm text-[#7a6b95] mt-6">
             已有账号？{" "}
-            <Link href="/login" className="text-[#9C7BFF] hover:text-[#7d5ce5] font-medium transition-colors">
+            <a href="/everplay/login" className="text-[#9C7BFF] hover:text-[#7d5ce5] font-medium transition-colors">
               立即登录
-            </Link>
+            </a>
           </p>
         </div>
 

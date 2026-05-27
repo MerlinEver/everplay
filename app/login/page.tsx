@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 
 
@@ -12,8 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [toast, setToast] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
       setToast("你暂时没有账号哟，注册一个试试嘛～");
       setTimeout(() => setToast(""), 3500);
@@ -61,7 +59,7 @@ export default function LoginPage() {
           </p>
 
           {/* 表单 */}
-          <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          <form className="flex flex-col gap-5">
             {/* 邮箱/用户名 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
@@ -139,17 +137,18 @@ export default function LoginPage() {
                 </span>
               </label>
 
-              <Link
-                href="/forgot-password"
+              <a
+                href="/everplay/forgot-password"
                 className="text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors"
               >
                 忘记密码？
-              </Link>
+              </a>
             </div>
 
             {/* 主按钮 */}
             <button
-              type="submit"
+              type="button"
+              onClick={handleLogin}
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
               登录 →
@@ -191,9 +190,9 @@ export default function LoginPage() {
           {/* 注册引导 */}
           <p className="text-center text-sm text-[#7a6b95] mt-8">
             还没有账号？{" "}
-            <Link href="/register" className="text-[#9C7BFF] hover:text-[#7d5ce5] font-medium transition-colors">
+            <a href="/everplay/register" className="text-[#9C7BFF] hover:text-[#7d5ce5] font-medium transition-colors">
               立即注册
-            </Link>
+            </a>
           </p>
         </div>
 
