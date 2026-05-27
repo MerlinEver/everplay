@@ -22,6 +22,14 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
 
+      {/* 返回首页 */}
+      <a href="/everplay/" className="fixed top-6 left-6 z-40 flex items-center gap-1.5 text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors bg-white/60 backdrop-blur-sm rounded-xl px-3 py-2 border border-[#dcd0f0]">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        返回首页
+      </a>
+
       {/* 主容器 */}
       <div className="w-full max-w-md rounded-[40px] overflow-hidden">
         {/* 注册卡片 */}

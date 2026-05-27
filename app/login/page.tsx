@@ -25,6 +25,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
 
+      {/* 返回首页 */}
+      <a href="/everplay/" className="fixed top-6 left-6 z-40 flex items-center gap-1.5 text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors bg-white/60 backdrop-blur-sm rounded-xl px-3 py-2 border border-[#dcd0f0]">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        返回首页
+      </a>
+
       {/* 主容器 */}
       <div className="w-full max-w-md rounded-[40px] overflow-hidden">
         {/* 登录卡片 */}
@@ -194,21 +202,25 @@ export default function LoginPage() {
       {/* 提示弹窗 */}
       {toast && (
         <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 animate-bounce-in">
-          <div className="bg-white/90 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-6 py-4 shadow-lg flex items-center gap-3">
-            <span className="text-xl">🎮</span>
+          <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-6 py-4 shadow-lg flex items-center gap-3">
+            <span className="text-xl">👋</span>
             <div>
               <p className="text-[#5B4A7A] text-sm font-medium">{toast}</p>
-              <p className="text-[#b8a8d0] text-xs mt-0.5">点击下方"立即注册"创建账号</p>
+              <div className="flex items-center gap-3 mt-2">
+                <a
+                  href="/everplay/register"
+                  className="text-xs bg-[#9C7BFF] text-white px-3 py-1 rounded-full hover:bg-[#8d6aef] transition-colors"
+                >
+                  去注册
+                </a>
+                <button
+                  onClick={() => setToast("")}
+                  className="text-xs text-[#b8a8d0] hover:text-[#5B4A7A]"
+                >
+                  稍后再说
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setToast("")}
-              className="text-[#b8a8d0] hover:text-[#5B4A7A] ml-2"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
           </div>
         </div>
       )}

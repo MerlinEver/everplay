@@ -23,7 +23,7 @@
 }
 
 @utility animate-loading-logo {
-  animation: loading-logo 2s ease-in-out infinite;
+  animation: loading-logo 1.2s ease-in-out infinite;
 }
 
 @keyframes bounce-in {

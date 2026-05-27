@@ -8,10 +8,8 @@ export default function LoadingScreen() {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // wait for page content to render, then start fade
-    const timer1 = setTimeout(() => setFadeOut(true), 2000);
-    // remove from DOM after fade completes
-    const timer2 = setTimeout(() => setVisible(false), 2800);
+    const timer1 = setTimeout(() => setFadeOut(true), 600);
+    const timer2 = setTimeout(() => setVisible(false), 1200);
 
     return () => {
       clearTimeout(timer1);
