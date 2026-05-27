@@ -10,12 +10,13 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [toast, setToast] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // 简易逻辑：如果用户不存在（空字段视为无账号），跳转注册页
     if (!email.trim() || !password.trim()) {
-      window.location.href = "/everplay/register";
+      setToast("你暂时没有账号哟，注册一个试试嘛～");
+      setTimeout(() => setToast(""), 3500);
       return;
     }
     // 正常登录逻辑
@@ -189,6 +190,28 @@ export default function LoginPage() {
         </div>
 
         </div>
+
+      {/* 提示弹窗 */}
+      {toast && (
+        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 animate-bounce-in">
+          <div className="bg-white/90 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-6 py-4 shadow-lg flex items-center gap-3">
+            <span className="text-xl">🎮</span>
+            <div>
+              <p className="text-[#5B4A7A] text-sm font-medium">{toast}</p>
+              <p className="text-[#b8a8d0] text-xs mt-0.5">点击下方"立即注册"创建账号</p>
+            </div>
+            <button
+              onClick={() => setToast("")}
+              className="text-[#b8a8d0] hover:text-[#5B4A7A] ml-2"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 底部版权 */}
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
