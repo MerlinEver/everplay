@@ -201,21 +201,20 @@ export default function LoginPage() {
 
       {/* 提示弹窗 */}
       {toast && (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 animate-bounce-in">
-          <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-6 py-4 shadow-lg flex items-center gap-3">
-            <span className="text-xl">👋</span>
-            <div>
-              <p className="text-[#5B4A7A] text-sm font-medium">{toast}</p>
-              <div className="flex items-center gap-3 mt-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
+            <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
+              <p className="text-[#5B4A7A] text-sm font-medium leading-relaxed">{toast}</p>
+              <div className="flex items-center gap-3">
                 <a
                   href="/everplay/register"
-                  className="text-xs bg-[#9C7BFF] text-white px-3 py-1 rounded-full hover:bg-[#8d6aef] transition-colors"
+                  className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
                 >
                   去注册
                 </a>
                 <button
                   onClick={() => setToast("")}
-                  className="text-xs text-[#b8a8d0] hover:text-[#5B4A7A]"
+                  className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
                 >
                   稍后再说
                 </button>

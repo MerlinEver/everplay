@@ -26,21 +26,17 @@
   animation: loading-logo 1.2s ease-in-out infinite;
 }
 
-@keyframes bounce-in {
+@keyframes toast-pop {
   0% {
-    transform: translate(-50%, -20px);
+    transform: translate(-50%, -50%) scale(0.85);
     opacity: 0;
   }
-  60% {
-    transform: translate(-50%, 4px);
-    opacity: 1;
-  }
   100% {
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
 }
 
-@utility animate-bounce-in {
-  animation: bounce-in 0.4s ease-out;
+@utility animate-toast-pop {
+  animation: toast-pop 0.3s ease-out forwards;
 }
