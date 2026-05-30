@@ -1,28 +1,65 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useRef, useEffect } from "react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [toast, setToast] = useState("");
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+  const toastRef = useRef<HTMLDivElement>(null);
+  const [hydrated, setHydrated] = useState(false);
 
-  const handleLogin = () => {
-    if (!email.trim() || !password.trim()) {
-      setToast("你暂时没有账号哟，注册一个试试嘛～");
-      setTimeout(() => setToast(""), 3500);
-      return;
-    }
-    // 正常登录逻辑
-  };
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    const btn = btnRef.current;
+    const toast = toastRef.current;
+    if (!btn || !toast) return;
+
+    let timer: ReturnType<typeof setTimeout>;
+
+    const showToast = () => {
+      toast.style.display = "flex";
+      toast.style.opacity = "1";
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => { toast.style.display = "none"; }, 300);
+      }, 3500);
+    };
+
+    const hideToast = () => {
+      toast.style.opacity = "0";
+      setTimeout(() => { toast.style.display = "none"; }, 300);
+      clearTimeout(timer);
+    };
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const emailVal = (emailRef.current?.value ?? "").trim();
+      const passVal = (passRef.current?.value ?? "").trim();
+      if (!emailVal || !passVal) {
+        showToast();
+        return;
+      }
+    });
+
+    toast.querySelector('[data-action="dismiss"]')?.addEventListener("click", hideToast);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [hydrated]);
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
 
-      {/* 返回首页 */}
       <a href="/everplay/" className="fixed top-6 left-6 z-40 flex items-center gap-1.5 text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors bg-white/60 backdrop-blur-sm rounded-xl px-3 py-2 border border-[#dcd0f0]">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -30,11 +67,8 @@ export default function LoginPage() {
         返回首页
       </a>
 
-      {/* 主容器 */}
       <div className="w-full max-w-md rounded-[40px] overflow-hidden">
-        {/* 登录卡片 */}
         <div className="bg-white/60 backdrop-blur-xl px-8 py-12 md:px-14 md:py-16 flex flex-col">
-          {/* Logo 区域 */}
           <div className="flex items-center gap-3 mb-10">
             <img
               src="/everplay/logo.png"
@@ -46,7 +80,6 @@ export default function LoginPage() {
             </span>
           </div>
 
-          {/* 标题 */}
           <h1 className="text-3xl md:text-4xl font-light tracking-wide mb-2">
             欢迎回来 ✦
           </h1>
@@ -54,9 +87,7 @@ export default function LoginPage() {
             登录你的 Everplay 账号，继续探索无限世界
           </p>
 
-          {/* 表单 */}
           <div className="flex flex-col gap-5">
-            {/* 邮箱/用户名 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -65,6 +96,7 @@ export default function LoginPage() {
                 </svg>
               </div>
               <input
+                ref={emailRef}
                 type="text"
                 placeholder="邮箱或用户名"
                 value={email}
@@ -73,7 +105,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* 密码 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -82,6 +113,7 @@ export default function LoginPage() {
                 </svg>
               </div>
               <input
+                ref={passRef}
                 type={showPassword ? "text" : "password"}
                 placeholder="密码"
                 value={password}
@@ -110,7 +142,6 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* 记住我 + 忘记密码 */}
             <div className="flex items-center justify-between mt-1">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <div className="relative">
@@ -141,24 +172,21 @@ export default function LoginPage() {
               </a>
             </div>
 
-            {/* 主按钮 */}
             <button
+              ref={btnRef}
               type="button"
-              onClick={handleLogin}
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
               登录 →
             </button>
           </div>
 
-          {/* 分隔线 */}
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 h-[1px] bg-[#e0d4f4]" />
             <span className="text-xs text-[#b8a8d0]">或</span>
             <div className="flex-1 h-[1px] bg-[#e0d4f4]" />
           </div>
 
-          {/* 第三方登录 */}
           <div className="flex gap-3">
             <button className="flex-1 py-3 rounded-2xl bg-white/50 border border-[#e8dcf6] flex items-center justify-center gap-2 text-sm text-[#6d5a87] hover:bg-white hover:border-[#c4b0f0] transition-all">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#5865F2">
@@ -183,7 +211,6 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* 注册引导 */}
           <p className="text-center text-sm text-[#7a6b95] mt-8">
             还没有账号？{" "}
             <a href="/everplay/register" className="text-[#9C7BFF] hover:text-[#7d5ce5] font-medium transition-colors">
@@ -191,35 +218,35 @@ export default function LoginPage() {
             </a>
           </p>
         </div>
+      </div>
 
-        </div>
-
-      {/* 提示弹窗 */}
-      {toast && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
-            <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-              <p className="text-[#5B4A7A] text-sm font-medium leading-relaxed">{toast}</p>
-              <div className="flex items-center gap-3">
-                <a
-                  href="/everplay/register"
-                  className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
-                >
-                  去注册
-                </a>
-                <button
-                  onClick={() => setToast("")}
-                  className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
-                >
-                  稍后再说
-                </button>
-              </div>
+      <div
+        ref={toastRef}
+        style={{ display: "none", opacity: 0 }}
+        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
+      >
+        <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
+          <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
+            <p className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
+            <div className="flex items-center gap-3">
+              <a
+                href="/everplay/register"
+                className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
+              >
+                去注册
+              </a>
+              <button
+                data-action="dismiss"
+                className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
+              >
+                稍后再说
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* 底部版权 */}
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
         &copy; 2026 Everplay Studio
       </div>
