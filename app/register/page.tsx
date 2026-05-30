@@ -10,6 +10,60 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showFounder, setShowFounder] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const FOUNDER_EMAIL = "ybao0287@gmail.com";
+
+  const handleRegister = () => {
+    const trimmedName = username.trim();
+    const trimmedEmail = email.trim();
+    if (!trimmedName || !trimmedEmail || !password || !confirmPassword) {
+      setToastMessage("请填写所有字段");
+      setShowToast(true);
+      return;
+    }
+    if (!agreed) {
+      setToastMessage("请先同意服务条款和隐私政策");
+      setShowToast(true);
+      return;
+    }
+    if (password !== confirmPassword) {
+      setToastMessage("两次输入的密码不一致");
+      setShowToast(true);
+      return;
+    }
+    if (password.length < 6) {
+      setToastMessage("密码长度不能少于6位");
+      setShowToast(true);
+      return;
+    }
+    try {
+      const users = JSON.parse(localStorage.getItem("everplay_users") || "[]");
+      if (users.find((u: { email: string }) => u.email === trimmedEmail)) {
+        setToastMessage("该邮箱已注册，请直接登录");
+        setShowToast(true);
+        return;
+      }
+      users.push({ username: trimmedName, email: trimmedEmail, password });
+      localStorage.setItem("everplay_users", JSON.stringify(users));
+      if (trimmedEmail.toLowerCase() === FOUNDER_EMAIL) {
+        setShowFounder(true);
+        setToastMessage("创世者账号已创建！");
+        setShowToast(true);
+        return;
+      }
+      setToastMessage("注册成功！即将跳转到登录页...");
+      setShowToast(true);
+      setTimeout(() => {
+        window.location.href = "/everplay/login";
+      }, 2000);
+    } catch {
+      setToastMessage("注册失败，请重试");
+      setShowToast(true);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
@@ -182,6 +236,7 @@ export default function RegisterPage() {
             <button
               id="reg-btn"
               type="button"
+              onClick={handleRegister}
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
               注册 →
@@ -227,50 +282,42 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div
-        id="reg-toast"
-        style={{ display: "none", opacity: 0 }}
-        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
-      >
-        <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
-          <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-            <p id="reg-toast-msg" className="text-[#5B4A7A] text-sm font-medium leading-relaxed">注册中...</p>
-            <button
-              data-action="dismiss"
-              className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
-            >
-              关闭
-            </button>
+      {showToast && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/10" onClick={() => setShowToast(false)} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
+            <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
+              <p className="text-[#5B4A7A] text-sm font-medium leading-relaxed">{toastMessage}</p>
+              <button
+                onClick={() => setShowToast(false)}
+                className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
+              >
+                关闭
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
         &copy; 2026 Everplay Studio
       </div>
 
-      <div
-        id="founder-overlay"
-        style={{ display: "none" }}
-        className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none"
-      >
-        <div className="relative">
-          <p
-            id="founder-text"
-            className="text-4xl md:text-5xl font-bold tracking-widest text-transparent bg-gradient-to-r from-[#c4a6ff] via-[#e8d5ff] to-[#b392f0] bg-clip-text whitespace-nowrap animate-founder-rise"
-          >
-            迎接创世者归来
-          </p>
-          <p
-            id="founder-text-glitch"
-            className="text-4xl md:text-5xl font-bold tracking-widest text-[#c4a6ff] whitespace-nowrap absolute top-0 left-0 opacity-0 animate-founder-rise animate-founder-glitch-slice"
-            aria-hidden="true"
-          >
-            迎接创世者归来
-          </p>
+      {showFounder && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none">
+          <div className="relative">
+            <p className="text-4xl md:text-5xl font-bold tracking-widest text-transparent bg-gradient-to-r from-[#c4a6ff] via-[#e8d5ff] to-[#b392f0] bg-clip-text whitespace-nowrap animate-founder-rise">
+              迎接创世者归来
+            </p>
+            <p
+              className="text-4xl md:text-5xl font-bold tracking-widest text-[#c4a6ff] whitespace-nowrap absolute top-0 left-0 opacity-0 animate-founder-rise animate-founder-glitch"
+              aria-hidden="true"
+            >
+              迎接创世者归来
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
     </div>
   );

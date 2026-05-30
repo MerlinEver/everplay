@@ -7,6 +7,44 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showFounder, setShowFounder] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const FOUNDER_EMAIL = "ybao0287@gmail.com";
+
+  const handleLogin = () => {
+    const trimmedEmail = email.trim();
+    const trimmedPass = password.trim();
+    if (!trimmedEmail || !trimmedPass) {
+      setToastMessage("你暂时没有账号哟，注册一个试试嘛～");
+      setShowToast(true);
+      return;
+    }
+    try {
+      const users = JSON.parse(localStorage.getItem("everplay_users") || "[]");
+      const user = users.find((u: { email: string }) => u.email === trimmedEmail);
+      if (!user) {
+        setToastMessage("未找到你的账户，请先注册");
+        setShowToast(true);
+        return;
+      }
+      if ((user as { password: string }).password !== trimmedPass) {
+        setToastMessage("密码错误，请重试");
+        setShowToast(true);
+        return;
+      }
+      if (trimmedEmail.toLowerCase() === FOUNDER_EMAIL) {
+        setShowFounder(true);
+        return;
+      }
+      setToastMessage("登录成功，欢迎回来！");
+      setShowToast(true);
+    } catch {
+      setToastMessage("你暂时没有账号哟，注册一个试试嘛～");
+      setShowToast(true);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
@@ -126,6 +164,7 @@ export default function LoginPage() {
             <button
               id="login-btn"
               type="button"
+              onClick={handleLogin}
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
               登录 →
@@ -171,58 +210,54 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div
-        id="login-toast"
-        style={{ display: "none", opacity: 0 }}
-        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
-      >
-        <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
-          <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-            <p id="login-toast-msg" className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
-            <div className="flex items-center gap-3">
-              <a
-                href="/everplay/register"
-                className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
-              >
-                去注册
-              </a>
-              <button
-                data-action="dismiss"
-                className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
-              >
-                稍后再说
-              </button>
+      {showToast && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+        >
+          <div className="fixed inset-0 bg-black/10" onClick={() => setShowToast(false)} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
+            <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
+              <p className="text-[#5B4A7A] text-sm font-medium leading-relaxed">{toastMessage}</p>
+              <div className="flex items-center gap-3">
+                {toastMessage.includes("注册") && (
+                  <a
+                    href="/everplay/register"
+                    className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
+                  >
+                    去注册
+                  </a>
+                )}
+                <button
+                  onClick={() => setShowToast(false)}
+                  className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
+                >
+                  {toastMessage.includes("注册") ? "稍后再说" : "关闭"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
         &copy; 2026 Everplay Studio
       </div>
 
-      <div
-        id="founder-overlay"
-        style={{ display: "none" }}
-        className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none"
-      >
-        <div className="relative">
-          <p
-            id="founder-text"
-            className="text-4xl md:text-5xl font-bold tracking-widest text-transparent bg-gradient-to-r from-[#c4a6ff] via-[#e8d5ff] to-[#b392f0] bg-clip-text whitespace-nowrap animate-founder-rise"
-          >
-            迎接创世者归来
-          </p>
-          <p
-            id="founder-text-glitch"
-            className="text-4xl md:text-5xl font-bold tracking-widest text-[#c4a6ff] whitespace-nowrap absolute top-0 left-0 opacity-0 animate-founder-rise animate-founder-glitch-slice"
-            aria-hidden="true"
-          >
-            迎接创世者归来
-          </p>
+      {showFounder && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none">
+          <div className="relative">
+            <p className="text-4xl md:text-5xl font-bold tracking-widest text-transparent bg-gradient-to-r from-[#c4a6ff] via-[#e8d5ff] to-[#b392f0] bg-clip-text whitespace-nowrap animate-founder-rise">
+              迎接创世者归来
+            </p>
+            <p
+              className="text-4xl md:text-5xl font-bold tracking-widest text-[#c4a6ff] whitespace-nowrap absolute top-0 left-0 opacity-0 animate-founder-rise animate-founder-glitch"
+              aria-hidden="true"
+            >
+              迎接创世者归来
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
     </div>
   );
