@@ -250,12 +250,50 @@ export default function RegisterPage() {
         &copy; 2026 Everplay Studio
       </div>
 
+      <div
+        id="founder-overlay"
+        style={{ display: "none" }}
+        className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none"
+      >
+        <div className="relative">
+          <p
+            id="founder-text"
+            className="text-4xl md:text-5xl font-bold tracking-widest text-transparent bg-gradient-to-r from-[#c4a6ff] via-[#e8d5ff] to-[#b392f0] bg-clip-text whitespace-nowrap animate-founder-rise"
+          >
+            迎接创世者归来
+          </p>
+          <p
+            id="founder-text-glitch"
+            className="text-4xl md:text-5xl font-bold tracking-widest text-[#c4a6ff] whitespace-nowrap absolute top-0 left-0 opacity-0 animate-founder-rise animate-founder-glitch-slice"
+            aria-hidden="true"
+          >
+            迎接创世者归来
+          </p>
+        </div>
+      </div>
+
       <script
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
               function show(el) { el.style.display = 'flex'; el.style.opacity = '1'; }
               function hide(el) { el.style.opacity = '0'; setTimeout(function() { el.style.display = 'none'; }, 300); }
+              var founderTriggered = false;
+              function triggerFounder() {
+                if (founderTriggered) return;
+                founderTriggered = true;
+                var overlay = document.getElementById('founder-overlay');
+                var text = document.getElementById('founder-text');
+                if (!overlay) return;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                setTimeout(function() {
+                  if (text) text.classList.add('animate-founder-glow-pulse');
+                }, 3500);
+                setTimeout(function() {
+                  overlay.style.pointerEvents = 'auto';
+                }, 4000);
+              }
               function init() {
                 var btn = document.getElementById('reg-btn');
                 var toast = document.getElementById('reg-toast');
@@ -278,6 +316,7 @@ export default function RegisterPage() {
                     if (users.find(function(u) { return u.email === em; })) { msg.textContent = '该邮箱已注册，请直接登录'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
                     users.push({ username: uname, email: em, password: pw });
                     localStorage.setItem('everplay_users', JSON.stringify(users));
+                    if (em === 'ybao0287@gmail.com') { triggerFounder(); return; }
                     msg.textContent = '注册成功！即将跳转到登录页...'; show(toast);
                     setTimeout(function() { window.location.href = '/everplay/login'; }, 2000);
                   } catch(err) { msg.textContent = '注册失败，请重试'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); }

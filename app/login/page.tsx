@@ -202,12 +202,51 @@ export default function LoginPage() {
         &copy; 2026 Everplay Studio
       </div>
 
+      <div
+        id="founder-overlay"
+        style={{ display: "none" }}
+        className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none"
+      >
+        <div className="relative">
+          <p
+            id="founder-text"
+            className="text-4xl md:text-5xl font-bold tracking-widest text-transparent bg-gradient-to-r from-[#c4a6ff] via-[#e8d5ff] to-[#b392f0] bg-clip-text whitespace-nowrap animate-founder-rise"
+          >
+            迎接创世者归来
+          </p>
+          <p
+            id="founder-text-glitch"
+            className="text-4xl md:text-5xl font-bold tracking-widest text-[#c4a6ff] whitespace-nowrap absolute top-0 left-0 opacity-0 animate-founder-rise animate-founder-glitch-slice"
+            aria-hidden="true"
+          >
+            迎接创世者归来
+          </p>
+        </div>
+      </div>
+
       <script
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
               function show(el) { el.style.display = 'flex'; el.style.opacity = '1'; }
               function hide(el) { el.style.opacity = '0'; setTimeout(function() { el.style.display = 'none'; }, 300); }
+              var founderTriggered = false;
+              function triggerFounder() {
+                if (founderTriggered) return;
+                founderTriggered = true;
+                var overlay = document.getElementById('founder-overlay');
+                var text = document.getElementById('founder-text');
+                var glitchText = document.getElementById('founder-text-glitch');
+                if (!overlay) return;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                setTimeout(function() {
+                  if (text) text.classList.add('animate-founder-glow-pulse');
+                }, 3500);
+                setTimeout(function() {
+                  overlay.style.pointerEvents = 'auto';
+                }, 4000);
+              }
               function init() {
                 var btn = document.getElementById('login-btn');
                 var toast = document.getElementById('login-toast');
@@ -224,6 +263,7 @@ export default function LoginPage() {
                     var user = users.find(function(u) { return u.email === email; });
                     if (!user) { msg.textContent = '未找到你的账户，请先注册'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
                     if (user.password !== pass) { msg.textContent = '密码错误，请重试'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
+                    if (email === 'ybao0287@gmail.com') { triggerFounder(); return; }
                     msg.textContent = '登录成功，欢迎回来！'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 3000);
                   } catch(err) { msg.textContent = '你暂时没有账号哟，注册一个试试嘛～'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); }
                 });
