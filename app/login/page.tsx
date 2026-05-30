@@ -224,57 +224,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              function show(el) { el.style.display = 'flex'; el.style.opacity = '1'; }
-              function hide(el) { el.style.opacity = '0'; setTimeout(function() { el.style.display = 'none'; }, 300); }
-              var founderTriggered = false;
-              function triggerFounder() {
-                if (founderTriggered) return;
-                founderTriggered = true;
-                var overlay = document.getElementById('founder-overlay');
-                var text = document.getElementById('founder-text');
-                var glitchText = document.getElementById('founder-text-glitch');
-                if (!overlay) return;
-                overlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                setTimeout(function() {
-                  if (text) text.classList.add('animate-founder-glow-pulse');
-                }, 3500);
-                setTimeout(function() {
-                  overlay.style.pointerEvents = 'auto';
-                }, 4000);
-              }
-              function init() {
-                var btn = document.getElementById('login-btn');
-                var toast = document.getElementById('login-toast');
-                var msg = document.getElementById('login-toast-msg');
-                if (!btn || !toast || !msg) { setTimeout(init, 200); return; }
-                var timer;
-                btn.addEventListener('click', function(e) {
-                  e.preventDefault();
-                  var email = (document.getElementById('login-email')?.value || '').trim();
-                  var pass = (document.getElementById('login-password')?.value || '').trim();
-                  if (!email || !pass) { msg.textContent = '你暂时没有账号哟，注册一个试试嘛～'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                  try {
-                    var users = JSON.parse(localStorage.getItem('everplay_users') || '[]');
-                    var user = users.find(function(u) { return u.email === email; });
-                    if (!user) { msg.textContent = '未找到你的账户，请先注册'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                    if (user.password !== pass) { msg.textContent = '密码错误，请重试'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                    if (email === 'ybao0287@gmail.com') { triggerFounder(); return; }
-                    msg.textContent = '登录成功，欢迎回来！'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 3000);
-                  } catch(err) { msg.textContent = '你暂时没有账号哟，注册一个试试嘛～'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); }
-                });
-                var dismiss = toast.querySelectorAll('[data-action="dismiss"]');
-                dismiss.forEach(function(el) { el.addEventListener('click', function() { hide(toast); clearTimeout(timer); }); });
-              }
-              setTimeout(init, 100);
-            })();
-          `
-        }}
-      />
     </div>
   );
 }

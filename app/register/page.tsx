@@ -272,63 +272,6 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              function show(el) { el.style.display = 'flex'; el.style.opacity = '1'; }
-              function hide(el) { el.style.opacity = '0'; setTimeout(function() { el.style.display = 'none'; }, 300); }
-              var founderTriggered = false;
-              function triggerFounder() {
-                if (founderTriggered) return;
-                founderTriggered = true;
-                var overlay = document.getElementById('founder-overlay');
-                var text = document.getElementById('founder-text');
-                if (!overlay) return;
-                overlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                setTimeout(function() {
-                  if (text) text.classList.add('animate-founder-glow-pulse');
-                }, 3500);
-                setTimeout(function() {
-                  overlay.style.pointerEvents = 'auto';
-                }, 4000);
-              }
-              function init() {
-                var btn = document.getElementById('reg-btn');
-                var toast = document.getElementById('reg-toast');
-                var msg = document.getElementById('reg-toast-msg');
-                if (!btn || !toast || !msg) { setTimeout(init, 200); return; }
-                var timer;
-                btn.addEventListener('click', function(e) {
-                  e.preventDefault();
-                  var uname = (document.getElementById('reg-username')?.value || '').trim();
-                  var em = (document.getElementById('reg-email')?.value || '').trim();
-                  var pw = document.getElementById('reg-password')?.value || '';
-                  var cpw = document.getElementById('reg-confirm')?.value || '';
-                  var agreed = document.getElementById('reg-agree')?.checked || false;
-                  if (!uname || !em || !pw || !cpw) { msg.textContent = '请填写所有字段'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                  if (!agreed) { msg.textContent = '请先同意服务条款和隐私政策'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                  if (pw !== cpw) { msg.textContent = '两次输入的密码不一致'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                  if (pw.length < 6) { msg.textContent = '密码长度不能少于6位'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                  try {
-                    var users = JSON.parse(localStorage.getItem('everplay_users') || '[]');
-                    if (users.find(function(u) { return u.email === em; })) { msg.textContent = '该邮箱已注册，请直接登录'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
-                    users.push({ username: uname, email: em, password: pw });
-                    localStorage.setItem('everplay_users', JSON.stringify(users));
-                    if (em === 'ybao0287@gmail.com') { triggerFounder(); msg.textContent = '创世者账号已创建！'; show(toast); return; }
-                    msg.textContent = '注册成功！即将跳转到登录页...'; show(toast);
-                    setTimeout(function() { window.location.href = '/everplay/login'; }, 2000);
-                  } catch(err) { msg.textContent = '注册失败，请重试'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); }
-                });
-                var dismiss = toast.querySelectorAll('[data-action="dismiss"]');
-                dismiss.forEach(function(el) { el.addEventListener('click', function() { hide(toast); clearTimeout(timer); }); });
-              }
-              setTimeout(init, 100);
-            })();
-          `
-        }}
-      />
     </div>
   );
 }

@@ -40,6 +40,7 @@ export default function RootLayout({
       <body className="antialiased">
         <LoadingScreen />
         {children}
+        <script src="/everplay/everplay.js" defer />
       </body>
     </html>
   );
