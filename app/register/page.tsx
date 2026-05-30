@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useRef, useEffect } from "react";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,15 +10,110 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+  const confirmRef = useRef<HTMLInputElement>(null);
+  const agreeRef = useRef<HTMLInputElement>(null);
+  const toastRef = useRef<HTMLDivElement>(null);
+  const msgRef = useRef<HTMLParagraphElement>(null);
+  const [hydrated, setHydrated] = useState(false);
 
-  const handleRegister = () => {
-    // 注册逻辑
-  };
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    const btn = btnRef.current;
+    const toast = toastRef.current;
+    const msgEl = msgRef.current;
+    if (!btn || !toast || !msgEl) return;
+
+    let timer: ReturnType<typeof setTimeout>;
+
+    const showToast = () => {
+      toast.style.display = "flex";
+      toast.style.opacity = "1";
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => { toast.style.display = "none"; }, 300);
+      }, 4000);
+    };
+
+    const hideToast = () => {
+      toast.style.opacity = "0";
+      setTimeout(() => { toast.style.display = "none"; }, 300);
+      clearTimeout(timer);
+    };
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const uname = (usernameRef.current?.value ?? "").trim();
+      const em = (emailRef.current?.value ?? "").trim();
+      const pw = passRef.current?.value ?? "";
+      const cpw = confirmRef.current?.value ?? "";
+      const agreed = agreeRef.current?.checked ?? false;
+
+      if (!uname || !em || !pw || !cpw) {
+        msgEl.textContent = "请填写所有字段";
+        showToast();
+        return;
+      }
+
+      if (!agreed) {
+        msgEl.textContent = "请先同意服务条款和隐私政策";
+        showToast();
+        return;
+      }
+
+      if (pw !== cpw) {
+        msgEl.textContent = "两次输入的密码不一致";
+        showToast();
+        return;
+      }
+
+      if (pw.length < 6) {
+        msgEl.textContent = "密码长度不能少于6位";
+        showToast();
+        return;
+      }
+
+      try {
+        const users = JSON.parse(localStorage.getItem("everplay_users") || "[]");
+        const exists = users.find((u: { email: string }) => u.email === em);
+        if (exists) {
+          msgEl.textContent = "该邮箱已注册，请直接登录";
+          showToast();
+          return;
+        }
+
+        users.push({ username: uname, email: em, password: pw });
+        localStorage.setItem("everplay_users", JSON.stringify(users));
+        msgEl.textContent = "注册成功！即将跳转到登录页...";
+        showToast();
+        setTimeout(() => {
+          window.location.href = "/everplay/login";
+        }, 2000);
+      } catch {
+        msgEl.textContent = "注册失败，请重试";
+        showToast();
+      }
+    });
+
+    toast.querySelectorAll('[data-action="dismiss"]').forEach(el => {
+      el.addEventListener("click", hideToast);
+    });
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [hydrated]);
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
 
-      {/* 返回首页 */}
       <a href="/everplay/" className="fixed top-6 left-6 z-40 flex items-center gap-1.5 text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors bg-white/60 backdrop-blur-sm rounded-xl px-3 py-2 border border-[#dcd0f0]">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -27,11 +121,8 @@ export default function RegisterPage() {
         返回首页
       </a>
 
-      {/* 主容器 */}
       <div className="w-full max-w-md rounded-[40px] overflow-hidden">
-        {/* 注册卡片 */}
         <div className="bg-white/60 backdrop-blur-xl px-8 py-10 md:px-14 md:py-14 flex flex-col">
-          {/* Logo 区域 */}
           <div className="flex items-center gap-3 mb-8">
             <img
               src="/everplay/logo.png"
@@ -43,7 +134,6 @@ export default function RegisterPage() {
             </span>
           </div>
 
-          {/* 标题 */}
           <h1 className="text-3xl md:text-4xl font-light tracking-wide mb-2">
             创建你的账号 ✦
           </h1>
@@ -51,9 +141,7 @@ export default function RegisterPage() {
             加入 Everplay，开启属于你的游戏宇宙之旅
           </p>
 
-          {/* 表单 */}
           <div className="flex flex-col gap-4">
-            {/* 用户名 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -62,6 +150,7 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
+                ref={usernameRef}
                 type="text"
                 placeholder="用户名"
                 value={username}
@@ -70,7 +159,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* 邮箱 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -79,6 +167,7 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
+                ref={emailRef}
                 type="email"
                 placeholder="邮箱"
                 value={email}
@@ -87,7 +176,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* 密码 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -96,6 +184,7 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
+                ref={passRef}
                 type={showPassword ? "text" : "password"}
                 placeholder="密码"
                 value={password}
@@ -124,7 +213,6 @@ export default function RegisterPage() {
               </button>
             </div>
 
-            {/* 确认密码 */}
             <div className="relative">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9C7BFF]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -133,6 +221,7 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
+                ref={confirmRef}
                 type={showConfirm ? "text" : "password"}
                 placeholder="确认密码"
                 value={confirmPassword}
@@ -161,10 +250,10 @@ export default function RegisterPage() {
               </button>
             </div>
 
-            {/* 协议 */}
             <label className="flex items-start gap-2 cursor-pointer group mt-2">
               <div className="relative mt-0.5 flex-shrink-0">
                 <input
+                  ref={agreeRef}
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
@@ -190,24 +279,21 @@ export default function RegisterPage() {
               </span>
             </label>
 
-            {/* 主按钮 */}
             <button
+              ref={btnRef}
               type="button"
-              onClick={handleRegister}
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
               注册 →
             </button>
           </div>
 
-          {/* 分隔线 */}
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-[1px] bg-[#e0d4f4]" />
             <span className="text-xs text-[#b8a8d0]">或</span>
             <div className="flex-1 h-[1px] bg-[#e0d4f4]" />
           </div>
 
-          {/* 第三方注册 */}
           <div className="flex gap-3">
             <button className="flex-1 py-3 rounded-2xl bg-white/50 border border-[#e8dcf6] flex items-center justify-center gap-2 text-sm text-[#6d5a87] hover:bg-white hover:border-[#c4b0f0] transition-all">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#5865F2">
@@ -232,7 +318,6 @@ export default function RegisterPage() {
             </button>
           </div>
 
-          {/* 登录引导 */}
           <p className="text-center text-sm text-[#7a6b95] mt-6">
             已有账号？{" "}
             <a href="/everplay/login" className="text-[#9C7BFF] hover:text-[#7d5ce5] font-medium transition-colors">
@@ -240,10 +325,27 @@ export default function RegisterPage() {
             </a>
           </p>
         </div>
+      </div>
 
+      <div
+        ref={toastRef}
+        style={{ display: "none", opacity: 0 }}
+        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
+      >
+        <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
+          <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
+            <p ref={msgRef} className="text-[#5B4A7A] text-sm font-medium leading-relaxed">注册中...</p>
+            <button
+              data-action="dismiss"
+              className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
+            >
+              关闭
+            </button>
+          </div>
         </div>
+      </div>
 
-      {/* 底部版权 */}
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
         &copy; 2026 Everplay Studio
       </div>

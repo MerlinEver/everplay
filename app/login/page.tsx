@@ -11,6 +11,7 @@ export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
   const toastRef = useRef<HTMLDivElement>(null);
+  const msgRef = useRef<HTMLParagraphElement>(null);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -20,7 +21,8 @@ export default function LoginPage() {
   useEffect(() => {
     const btn = btnRef.current;
     const toast = toastRef.current;
-    if (!btn || !toast) return;
+    const msgEl = msgRef.current;
+    if (!btn || !toast || !msgEl) return;
 
     let timer: ReturnType<typeof setTimeout>;
 
@@ -31,7 +33,7 @@ export default function LoginPage() {
       timer = setTimeout(() => {
         toast.style.opacity = "0";
         setTimeout(() => { toast.style.display = "none"; }, 300);
-      }, 3500);
+      }, 4000);
     };
 
     const hideToast = () => {
@@ -44,13 +46,40 @@ export default function LoginPage() {
       e.preventDefault();
       const emailVal = (emailRef.current?.value ?? "").trim();
       const passVal = (passRef.current?.value ?? "").trim();
+
       if (!emailVal || !passVal) {
+        msgEl.textContent = "你暂时没有账号哟，注册一个试试嘛～";
         showToast();
         return;
       }
+
+      try {
+        const users = JSON.parse(localStorage.getItem("everplay_users") || "[]");
+        const user = users.find((u: { email: string }) => u.email === emailVal);
+
+        if (!user) {
+          msgEl.textContent = "未找到你的账户，请先注册";
+          showToast();
+          return;
+        }
+
+        if (user.password !== passVal) {
+          msgEl.textContent = "密码错误，请重试";
+          showToast();
+          return;
+        }
+
+        msgEl.textContent = "登录成功，欢迎回来！";
+        showToast();
+      } catch {
+        msgEl.textContent = "你暂时没有账号哟，注册一个试试嘛～";
+        showToast();
+      }
     });
 
-    toast.querySelector('[data-action="dismiss"]')?.addEventListener("click", hideToast);
+    toast.querySelectorAll('[data-action="dismiss"]').forEach(el => {
+      el.addEventListener("click", hideToast);
+    });
 
     return () => {
       clearTimeout(timer);
@@ -228,7 +257,7 @@ export default function LoginPage() {
         <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
           <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-            <p className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
+            <p ref={msgRef} className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
             <div className="flex items-center gap-3">
               <a
                 href="/everplay/register"
