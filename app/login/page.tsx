@@ -1,90 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passRef = useRef<HTMLInputElement>(null);
-  const toastRef = useRef<HTMLDivElement>(null);
-  const msgRef = useRef<HTMLParagraphElement>(null);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    const btn = btnRef.current;
-    const toast = toastRef.current;
-    const msgEl = msgRef.current;
-    if (!btn || !toast || !msgEl) return;
-
-    let timer: ReturnType<typeof setTimeout>;
-
-    const showToast = () => {
-      toast.style.display = "flex";
-      toast.style.opacity = "1";
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        toast.style.opacity = "0";
-        setTimeout(() => { toast.style.display = "none"; }, 300);
-      }, 4000);
-    };
-
-    const hideToast = () => {
-      toast.style.opacity = "0";
-      setTimeout(() => { toast.style.display = "none"; }, 300);
-      clearTimeout(timer);
-    };
-
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const emailVal = (emailRef.current?.value ?? "").trim();
-      const passVal = (passRef.current?.value ?? "").trim();
-
-      if (!emailVal || !passVal) {
-        msgEl.textContent = "你暂时没有账号哟，注册一个试试嘛～";
-        showToast();
-        return;
-      }
-
-      try {
-        const users = JSON.parse(localStorage.getItem("everplay_users") || "[]");
-        const user = users.find((u: { email: string }) => u.email === emailVal);
-
-        if (!user) {
-          msgEl.textContent = "未找到你的账户，请先注册";
-          showToast();
-          return;
-        }
-
-        if (user.password !== passVal) {
-          msgEl.textContent = "密码错误，请重试";
-          showToast();
-          return;
-        }
-
-        msgEl.textContent = "登录成功，欢迎回来！";
-        showToast();
-      } catch {
-        msgEl.textContent = "你暂时没有账号哟，注册一个试试嘛～";
-        showToast();
-      }
-    });
-
-    toast.querySelectorAll('[data-action="dismiss"]').forEach(el => {
-      el.addEventListener("click", hideToast);
-    });
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [hydrated]);
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
@@ -125,11 +45,9 @@ export default function LoginPage() {
                 </svg>
               </div>
               <input
-                ref={emailRef}
+                id="login-email"
                 type="text"
                 placeholder="邮箱或用户名"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
             </div>
@@ -142,11 +60,9 @@ export default function LoginPage() {
                 </svg>
               </div>
               <input
-                ref={passRef}
+                id="login-pass"
                 type={showPassword ? "text" : "password"}
                 placeholder="密码"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
               <button
@@ -193,16 +109,13 @@ export default function LoginPage() {
                 </span>
               </label>
 
-              <a
-                href="/everplay/forgot-password"
-                className="text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors"
-              >
+              <a href="/everplay/forgot-password" className="text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors">
                 忘记密码？
               </a>
             </div>
 
             <button
-              ref={btnRef}
+              id="login-btn"
               type="button"
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
@@ -249,26 +162,16 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div
-        ref={toastRef}
-        style={{ display: "none", opacity: 0 }}
-        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
-      >
+      <div id="login-toast" style={{ display: "none", opacity: 0 }} className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300">
         <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
           <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-            <p ref={msgRef} className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
+            <p id="toast-msg" className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
             <div className="flex items-center gap-3">
-              <a
-                href="/everplay/register"
-                className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
-              >
+              <a id="toast-register-link" href="/everplay/register" className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors">
                 去注册
               </a>
-              <button
-                data-action="dismiss"
-                className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
-              >
+              <button id="toast-dismiss-btn" type="button" className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors">
                 稍后再说
               </button>
             </div>
@@ -279,6 +182,69 @@ export default function LoginPage() {
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
         &copy; 2026 Everplay Studio
       </div>
+
+      <div dangerouslySetInnerHTML={{
+        __html: `<script>
+(function(){
+  var btn = document.getElementById('login-btn');
+  var toast = document.getElementById('login-toast');
+  var msg = document.getElementById('toast-msg');
+  var emailEl = document.getElementById('login-email');
+  var passEl = document.getElementById('login-pass');
+  var hideTimer;
+
+  function show(msgText) {
+    msg.textContent = msgText;
+    toast.style.display = 'flex';
+    toast.style.opacity = '1';
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 4000);
+  }
+
+  function hide() {
+    toast.style.opacity = '0';
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(function(){
+      toast.style.display = 'none';
+    }, 300);
+  }
+
+  btn.onclick = function(e) {
+    e.preventDefault();
+    var email = (emailEl.value || '').trim();
+    var pass = passEl.value || '';
+
+    if (!email || !pass) {
+      show('你暂时没有账号哟，注册一个试试嘛～');
+      return;
+    }
+
+    var users = [];
+    try { users = JSON.parse(localStorage.getItem('everplay_users') || '[]'); } catch(e) {}
+
+    var user = users.find(function(u) { return u.email === email; });
+    if (!user) {
+      show('未找到你的账户，请先注册');
+      document.getElementById('toast-register-link').style.display = '';
+      return;
+    }
+
+    if (user.password !== pass) {
+      show('密码错误，请重试');
+      document.getElementById('toast-register-link').style.display = 'none';
+      return;
+    }
+
+    document.getElementById('toast-register-link').style.display = 'none';
+    show('登录成功，欢迎回来！');
+  };
+
+  document.getElementById('toast-dismiss-btn').onclick = hide;
+  var overlay = toast.querySelector('[data-action="dismiss"]');
+  if (overlay) overlay.onclick = hide;
+})();
+</script>`
+      }} />
     </div>
   );
 }

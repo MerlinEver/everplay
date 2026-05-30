@@ -1,115 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [agreed, setAgreed] = useState(false);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passRef = useRef<HTMLInputElement>(null);
-  const confirmRef = useRef<HTMLInputElement>(null);
-  const agreeRef = useRef<HTMLInputElement>(null);
-  const toastRef = useRef<HTMLDivElement>(null);
-  const msgRef = useRef<HTMLParagraphElement>(null);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    const btn = btnRef.current;
-    const toast = toastRef.current;
-    const msgEl = msgRef.current;
-    if (!btn || !toast || !msgEl) return;
-
-    let timer: ReturnType<typeof setTimeout>;
-
-    const showToast = () => {
-      toast.style.display = "flex";
-      toast.style.opacity = "1";
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        toast.style.opacity = "0";
-        setTimeout(() => { toast.style.display = "none"; }, 300);
-      }, 4000);
-    };
-
-    const hideToast = () => {
-      toast.style.opacity = "0";
-      setTimeout(() => { toast.style.display = "none"; }, 300);
-      clearTimeout(timer);
-    };
-
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const uname = (usernameRef.current?.value ?? "").trim();
-      const em = (emailRef.current?.value ?? "").trim();
-      const pw = passRef.current?.value ?? "";
-      const cpw = confirmRef.current?.value ?? "";
-      const agreed = agreeRef.current?.checked ?? false;
-
-      if (!uname || !em || !pw || !cpw) {
-        msgEl.textContent = "请填写所有字段";
-        showToast();
-        return;
-      }
-
-      if (!agreed) {
-        msgEl.textContent = "请先同意服务条款和隐私政策";
-        showToast();
-        return;
-      }
-
-      if (pw !== cpw) {
-        msgEl.textContent = "两次输入的密码不一致";
-        showToast();
-        return;
-      }
-
-      if (pw.length < 6) {
-        msgEl.textContent = "密码长度不能少于6位";
-        showToast();
-        return;
-      }
-
-      try {
-        const users = JSON.parse(localStorage.getItem("everplay_users") || "[]");
-        const exists = users.find((u: { email: string }) => u.email === em);
-        if (exists) {
-          msgEl.textContent = "该邮箱已注册，请直接登录";
-          showToast();
-          return;
-        }
-
-        users.push({ username: uname, email: em, password: pw });
-        localStorage.setItem("everplay_users", JSON.stringify(users));
-        msgEl.textContent = "注册成功！即将跳转到登录页...";
-        showToast();
-        setTimeout(() => {
-          window.location.href = "/everplay/login";
-        }, 2000);
-      } catch {
-        msgEl.textContent = "注册失败，请重试";
-        showToast();
-      }
-    });
-
-    toast.querySelectorAll('[data-action="dismiss"]').forEach(el => {
-      el.addEventListener("click", hideToast);
-    });
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [hydrated]);
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
@@ -150,11 +46,9 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
-                ref={usernameRef}
+                id="reg-username"
                 type="text"
                 placeholder="用户名"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
             </div>
@@ -167,11 +61,9 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
-                ref={emailRef}
+                id="reg-email"
                 type="email"
                 placeholder="邮箱"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
             </div>
@@ -184,11 +76,9 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
-                ref={passRef}
+                id="reg-pass"
                 type={showPassword ? "text" : "password"}
                 placeholder="密码"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-12 pr-12 py-3 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
               <button
@@ -221,11 +111,9 @@ export default function RegisterPage() {
                 </svg>
               </div>
               <input
-                ref={confirmRef}
+                id="reg-confirm"
                 type={showConfirm ? "text" : "password"}
                 placeholder="确认密码"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full pl-12 pr-12 py-3 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
               <button
@@ -253,7 +141,7 @@ export default function RegisterPage() {
             <label className="flex items-start gap-2 cursor-pointer group mt-2">
               <div className="relative mt-0.5 flex-shrink-0">
                 <input
-                  ref={agreeRef}
+                  id="reg-agree"
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
@@ -280,7 +168,7 @@ export default function RegisterPage() {
             </label>
 
             <button
-              ref={btnRef}
+              id="reg-btn"
               type="button"
               className="mt-2 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#9C7BFF] to-[#b392f0] text-white text-base font-medium tracking-wide hover:from-[#8d6aef] hover:to-[#a580e8] transition-all duration-300 backdrop-blur-sm"
             >
@@ -327,19 +215,12 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div
-        ref={toastRef}
-        style={{ display: "none", opacity: 0 }}
-        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
-      >
-        <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
+      <div id="reg-toast" style={{ display: "none", opacity: 0 }} className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300">
+        <div className="fixed inset-0 bg-black/10" id="reg-toast-overlay" />
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
           <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-            <p ref={msgRef} className="text-[#5B4A7A] text-sm font-medium leading-relaxed">注册中...</p>
-            <button
-              data-action="dismiss"
-              className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
-            >
+            <p id="reg-toast-msg" className="text-[#5B4A7A] text-sm font-medium leading-relaxed">注册中...</p>
+            <button id="reg-toast-dismiss" type="button" className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors">
               关闭
             </button>
           </div>
@@ -349,6 +230,68 @@ export default function RegisterPage() {
       <div className="fixed bottom-6 left-0 right-0 text-center text-xs text-[#b8a8d0] z-10">
         &copy; 2026 Everplay Studio
       </div>
+
+      <div dangerouslySetInnerHTML={{
+        __html: `<script>
+(function(){
+  var btn = document.getElementById('reg-btn');
+  var toast = document.getElementById('reg-toast');
+  var msg = document.getElementById('reg-toast-msg');
+  var usernameEl = document.getElementById('reg-username');
+  var emailEl = document.getElementById('reg-email');
+  var passEl = document.getElementById('reg-pass');
+  var confirmEl = document.getElementById('reg-confirm');
+  var agreeEl = document.getElementById('reg-agree');
+  var hideTimer;
+
+  function show(msgText) {
+    msg.textContent = msgText;
+    toast.style.display = 'flex';
+    toast.style.opacity = '1';
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 4000);
+  }
+
+  function hide() {
+    toast.style.opacity = '0';
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(function(){
+      toast.style.display = 'none';
+    }, 300);
+  }
+
+  btn.onclick = function(e) {
+    e.preventDefault();
+    var uname = (usernameEl.value || '').trim();
+    var em = (emailEl.value || '').trim();
+    var pw = passEl.value || '';
+    var cpw = confirmEl.value || '';
+    var agreed = agreeEl.checked;
+
+    if (!uname || !em || !pw || !cpw) { show('请填写所有字段'); return; }
+    if (!agreed) { show('请先同意服务条款和隐私政策'); return; }
+    if (pw !== cpw) { show('两次输入的密码不一致'); return; }
+    if (pw.length < 6) { show('密码长度不能少于6位'); return; }
+
+    var users = [];
+    try { users = JSON.parse(localStorage.getItem('everplay_users') || '[]'); } catch(e) {}
+
+    var exists = users.find(function(u) { return u.email === em; });
+    if (exists) { show('该邮箱已注册，请直接登录'); return; }
+
+    users.push({ username: uname, email: em, password: pw });
+    localStorage.setItem('everplay_users', JSON.stringify(users));
+    show('注册成功！即将跳转到登录页...');
+    setTimeout(function(){
+      window.location.href = '/everplay/login';
+    }, 2000);
+  };
+
+  document.getElementById('reg-toast-dismiss').onclick = hide;
+  document.getElementById('reg-toast-overlay').onclick = hide;
+})();
+</script>`
+      }} />
     </div>
   );
 }
