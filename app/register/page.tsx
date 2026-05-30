@@ -316,7 +316,7 @@ export default function RegisterPage() {
                     if (users.find(function(u) { return u.email === em; })) { msg.textContent = '该邮箱已注册，请直接登录'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
                     users.push({ username: uname, email: em, password: pw });
                     localStorage.setItem('everplay_users', JSON.stringify(users));
-                    if (em === 'ybao0287@gmail.com') { triggerFounder(); return; }
+                    if (em === 'ybao0287@gmail.com') { triggerFounder(); msg.textContent = '创世者账号已创建！'; show(toast); return; }
                     msg.textContent = '注册成功！即将跳转到登录页...'; show(toast);
                     setTimeout(function() { window.location.href = '/everplay/login'; }, 2000);
                   } catch(err) { msg.textContent = '注册失败，请重试'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); }
