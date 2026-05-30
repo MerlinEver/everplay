@@ -5,6 +5,8 @@ import { useState } from "react";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div className="min-h-screen bg-[#ece6f3] text-[#5B4A7A] font-sans flex items-center justify-center p-4 md:p-8">
@@ -48,6 +50,8 @@ export default function LoginPage() {
                 id="login-email"
                 type="text"
                 placeholder="邮箱或用户名"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
             </div>
@@ -60,9 +64,11 @@ export default function LoginPage() {
                 </svg>
               </div>
               <input
-                id="login-pass"
+                id="login-password"
                 type={showPassword ? "text" : "password"}
                 placeholder="密码"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-white/70 border border-[#dcd0f0] text-[#5B4A7A] placeholder-[#b8a8d0] outline-none transition-all duration-300 focus:border-[#9C7BFF] focus:bg-white hover:border-[#c4b0f0] text-sm"
               />
               <button
@@ -109,7 +115,10 @@ export default function LoginPage() {
                 </span>
               </label>
 
-              <a href="/everplay/forgot-password" className="text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors">
+              <a
+                href="/everplay/forgot-password"
+                className="text-sm text-[#9C7BFF] hover:text-[#7d5ce5] transition-colors"
+              >
                 忘记密码？
               </a>
             </div>
@@ -162,16 +171,26 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div id="login-toast" style={{ display: "none", opacity: 0 }} className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300">
+      <div
+        id="login-toast"
+        style={{ display: "none", opacity: 0 }}
+        className="fixed inset-0 z-50 items-center justify-center transition-opacity duration-300"
+      >
         <div className="fixed inset-0 bg-black/10" data-action="dismiss" />
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-toast-pop">
           <div className="bg-white/95 backdrop-blur-md border border-[#dcd0f0] rounded-2xl px-8 py-5 shadow-xl flex flex-col items-center gap-4 text-center min-w-[260px]">
-            <p id="toast-msg" className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
+            <p id="login-toast-msg" className="text-[#5B4A7A] text-sm font-medium leading-relaxed">你暂时没有账号哟，注册一个试试嘛～</p>
             <div className="flex items-center gap-3">
-              <a id="toast-register-link" href="/everplay/register" className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors">
+              <a
+                href="/everplay/register"
+                className="text-sm bg-[#9C7BFF] text-white px-5 py-2 rounded-full hover:bg-[#8d6aef] transition-colors"
+              >
                 去注册
               </a>
-              <button id="toast-dismiss-btn" type="button" className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors">
+              <button
+                data-action="dismiss"
+                className="text-sm text-[#b8a8d0] hover:text-[#5B4A7A] transition-colors"
+              >
                 稍后再说
               </button>
             </div>
@@ -183,68 +202,39 @@ export default function LoginPage() {
         &copy; 2026 Everplay Studio
       </div>
 
-      <div dangerouslySetInnerHTML={{
-        __html: `<script>
-(function(){
-  var btn = document.getElementById('login-btn');
-  var toast = document.getElementById('login-toast');
-  var msg = document.getElementById('toast-msg');
-  var emailEl = document.getElementById('login-email');
-  var passEl = document.getElementById('login-pass');
-  var hideTimer;
-
-  function show(msgText) {
-    msg.textContent = msgText;
-    toast.style.display = 'flex';
-    toast.style.opacity = '1';
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(hide, 4000);
-  }
-
-  function hide() {
-    toast.style.opacity = '0';
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(function(){
-      toast.style.display = 'none';
-    }, 300);
-  }
-
-  btn.onclick = function(e) {
-    e.preventDefault();
-    var email = (emailEl.value || '').trim();
-    var pass = passEl.value || '';
-
-    if (!email || !pass) {
-      show('你暂时没有账号哟，注册一个试试嘛～');
-      return;
-    }
-
-    var users = [];
-    try { users = JSON.parse(localStorage.getItem('everplay_users') || '[]'); } catch(e) {}
-
-    var user = users.find(function(u) { return u.email === email; });
-    if (!user) {
-      show('未找到你的账户，请先注册');
-      document.getElementById('toast-register-link').style.display = '';
-      return;
-    }
-
-    if (user.password !== pass) {
-      show('密码错误，请重试');
-      document.getElementById('toast-register-link').style.display = 'none';
-      return;
-    }
-
-    document.getElementById('toast-register-link').style.display = 'none';
-    show('登录成功，欢迎回来！');
-  };
-
-  document.getElementById('toast-dismiss-btn').onclick = hide;
-  var overlay = toast.querySelector('[data-action="dismiss"]');
-  if (overlay) overlay.onclick = hide;
-})();
-</script>`
-      }} />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              function show(el) { el.style.display = 'flex'; el.style.opacity = '1'; }
+              function hide(el) { el.style.opacity = '0'; setTimeout(function() { el.style.display = 'none'; }, 300); }
+              function init() {
+                var btn = document.getElementById('login-btn');
+                var toast = document.getElementById('login-toast');
+                var msg = document.getElementById('login-toast-msg');
+                if (!btn || !toast || !msg) { setTimeout(init, 200); return; }
+                var timer;
+                btn.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  var email = (document.getElementById('login-email')?.value || '').trim();
+                  var pass = (document.getElementById('login-password')?.value || '').trim();
+                  if (!email || !pass) { msg.textContent = '你暂时没有账号哟，注册一个试试嘛～'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
+                  try {
+                    var users = JSON.parse(localStorage.getItem('everplay_users') || '[]');
+                    var user = users.find(function(u) { return u.email === email; });
+                    if (!user) { msg.textContent = '未找到你的账户，请先注册'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
+                    if (user.password !== pass) { msg.textContent = '密码错误，请重试'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); return; }
+                    msg.textContent = '登录成功，欢迎回来！'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 3000);
+                  } catch(err) { msg.textContent = '你暂时没有账号哟，注册一个试试嘛～'; show(toast); clearTimeout(timer); timer = setTimeout(function() { hide(toast); }, 4000); }
+                });
+                var dismiss = toast.querySelectorAll('[data-action="dismiss"]');
+                dismiss.forEach(function(el) { el.addEventListener('click', function() { hide(toast); clearTimeout(timer); }); });
+              }
+              setTimeout(init, 100);
+            })();
+          `
+        }}
+      />
     </div>
   );
 }
